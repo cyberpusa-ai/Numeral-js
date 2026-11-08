@@ -171,6 +171,9 @@
                     abbr += locale.abbreviations.thousand;
                     value = value / thousand;
                 }
+
+                // don't double the space when the locale abbreviation already starts with one
+                abbr = abbr.replace(/^ {2}/, ' ');
             }
 
             // check for optional decimals
@@ -292,7 +295,7 @@
                 }
 
                 for (abbreviation in abbreviations) {
-                    regexp = new RegExp('[^a-zA-Z]' + locale.abbreviations[abbreviation] + '(?:\\)|(\\' + locale.currency.symbol + ')?(?:\\))?)?$');
+                    regexp = new RegExp('[^a-zA-Z\\s]\\s*' + locale.abbreviations[abbreviation].replace(/^\s+/, '') + '(?:\\)|(\\s*\\' + locale.currency.symbol.replace(/^\s+/, '') + ')?(?:\\))?)?$');
 
                     if (stringOriginal.match(regexp)) {
                         value *= Math.pow(10, abbreviations[abbreviation]);
