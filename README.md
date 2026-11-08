@@ -60,6 +60,8 @@ See [the english unit tests](https://github.com/adamwdraper/Numeral-js/blob/mast
 
 Added: `numeral.scalePercentBy100(bool)` setter for the `scalePercentBy100` option. Non-boolean values restore the default (`true`)
 
+Locale fix: `de-ch` now uses `'` as the thousands delimiter and `.` as the decimal delimiter (same as `fr-ch`). **This changes output and parsing**: `numeral(10000).format('0,0.00')` was `10 000,00` and is now `10'000.00`, and `1,23` is no longer parsed as `1.23` (the comma is now read as a thousands delimiter, giving `123`)
+
 ### 2.0.6
 
 Bug fix: Multi letter currency symbols and spacing
