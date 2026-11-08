@@ -120,7 +120,7 @@
                 power,
                 int,
                 precision,
-                signed,
+                signed = -1,
                 plus = false,
                 thousands,
                 output;
