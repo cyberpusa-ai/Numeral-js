@@ -186,6 +186,9 @@
             leadingCount = (format.split('.')[0].split(',')[0].match(/0/g) || []).length;
 
             if (precision) {
+                // ignore whitespace around the decimals, e.g. '0.0 '
+                precision = precision.replace(/^\s+|\s+$/g, '');
+
                 if (numeral._.includes(precision, '[')) {
                     precision = precision.replace(']', '');
                     precision = precision.split('[');
