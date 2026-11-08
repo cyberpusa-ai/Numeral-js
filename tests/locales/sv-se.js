@@ -1,0 +1,103 @@
+// Node
+if (typeof module !== 'undefined' && module.exports) {
+    var numeral = require('../../numeral');
+    var locales = require('../../locales');
+    var expect = require('chai').expect;
+}
+
+describe('Locale: sv-se', function() {
+
+    before(function() {
+        numeral.locale('sv-se');
+    });
+
+    after(function() {
+        numeral.reset();
+    });
+
+    describe('Number', function() {
+        it('should format a number', function() {
+            var tests = [
+                [10000,'0,0.0000','10 000,0000'],
+                [10000.23,'0,0','10 000'],
+                [-10000,'0,0.0','-10 000,0'],
+                [10000.1234,'0.000','10000,123'],
+                [-10000,'(0,0.0000)','(10 000,0000)'],
+                [-0.23,'.00','-,23'],
+                [-0.23,'(.00)','(,23)'],
+                [0.23,'0.00000','0,23000'],
+                [1230974,'0.0a','1,2mn'],
+                [1460,'0a','1t'],
+                [-104000,'0a','-104t'],
+                [1,'0o','1:a'],
+                [2,'0o','2:a'],
+                [3,'0o','3:e'],
+                [11,'0o','11:e'],
+                [12,'0o','12:e'],
+                [21,'0o','21:a'],
+                [52,'0o','52:a'],
+                [23,'0o','23:e'],
+                [100,'0o','100:e'],
+                [111,'0o','111:e'],
+                [1,'0[.]0','1']
+            ];
+
+            for (var i = 0; i < tests.length; i++) {
+                expect(numeral(tests[i][0]).format(tests[i][1])).to.equal(tests[i][2]);
+            }
+        });
+    });
+
+    describe('Currency', function() {
+        it('should format a currency', function() {
+            var tests = [
+                [1000.234,'$0,0.00','kr1 000,23'],
+                [-1000.234,'($0,0)','(kr1 000)'],
+                [-1000.234,'$0.00','-kr1000,23'],
+                [1230974,'($0.00a)','kr1,23mn'],
+                [1000.234,'0,0.00 $','1 000,23 kr']
+            ];
+
+            for (var i = 0; i < tests.length; i++) {
+                expect(numeral(tests[i][0]).format(tests[i][1])).to.equal(tests[i][2]);
+            }
+        });
+    });
+
+    describe('Percentages', function() {
+        it('should format a percentages', function() {
+            var tests = [
+                [1,'0%','100%'],
+                [0.974878234,'0.000%','97,488%'],
+                [-0.43,'0%','-43%'],
+                [0.43,'(0.000%)','43,000%']
+            ];
+
+            for (var i = 0; i < tests.length; i++) {
+                expect(numeral(tests[i][0]).format(tests[i][1])).to.equal(tests[i][2]);
+            }
+        });
+    });
+
+    describe('Unformat', function() {
+        it('should unformat', function() {
+            var tests = [
+                ['10 000,123',10000.123],
+                ['(0,12345)',-0.12345],
+                ['(kr1,23mn)',-1230000],
+                ['10t',10000],
+                ['-10t',-10000],
+                ['2md',2000000000],
+                ['3bn',3000000000000],
+                ['kr10 000,00',10000],
+                ['10 000,00 kr',10000],
+                ['-76%',-0.76],
+                ['2:23:57',8637]
+            ];
+
+            for (var i = 0; i < tests.length; i++) {
+                expect(numeral(tests[i][0]).value()).to.equal(tests[i][1]);
+            }
+        });
+    });
+});
