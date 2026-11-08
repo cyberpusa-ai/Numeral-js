@@ -137,7 +137,7 @@
 (function() {
         numeral.register('locale', 'de', {
         delimiters: {
-            thousands: ' ',
+            thousands: '.',
             decimal: ','
         },
         abbreviations: {
