@@ -16,7 +16,7 @@
             format: /(o)/
         },
         format: function(value, format, roundingFunction) {
-            var locale = numeral.locales[numeral.options.currentLocale],
+            var locale = numeral.localeData(),
                 output,
                 ordinal = numeral._.includes(format, ' o') ? ' ' : '';
 

@@ -16,7 +16,7 @@
             format: /(\$)/
         },
         format: function(value, format, roundingFunction) {
-            var locale = numeral.locales[numeral.options.currentLocale],
+            var locale = numeral.localeData(),
                 symbols = {
                     before: format.match(/^([\+|\-|\(|\s|\$]*)/)[0],
                     after: format.match(/([\+|\-|\)|\s|\$]*)$/)[0]

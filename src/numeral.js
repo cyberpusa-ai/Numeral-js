@@ -102,7 +102,7 @@
     numeral._ = _ = {
         // formats numbers separators, decimals places, signs, abbreviations
         numberToFormat: function(value, format, roundingFunction) {
-            var locale = locales[numeral.options.currentLocale],
+            var locale = numeral.localeData(),
                 negP = false,
                 optDec = false,
                 leadingCount = 0,
@@ -264,7 +264,7 @@
         },
         // unformats numbers separators, decimals places, signs, abbreviations
         stringToNumber: function(string) {
-            var locale = locales[options.currentLocale],
+            var locale = numeral.localeData(),
                 stringOriginal = string,
                 abbreviations = {
                     thousand: 3,
@@ -459,7 +459,8 @@
     // no arguments are passed in, it will simply return the current global
     // locale key.
     numeral.locale = function(key) {
-        if (key) {
+        // ignore unknown locales so formatting keeps working
+        if (key && locales[key.toLowerCase()]) {
             options.currentLocale = key.toLowerCase();
         }
 
@@ -471,7 +472,8 @@
     // global locale object.
     numeral.localeData = function(key) {
         if (!key) {
-            return locales[options.currentLocale];
+            // fall back to en if the current locale is not registered
+            return locales[options.currentLocale] || locales[defaults.currentLocale];
         }
 
         key = key.toLowerCase();

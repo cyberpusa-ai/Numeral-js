@@ -101,6 +101,57 @@ describe('Numeral', function() {
         });
     });
 
+    describe('Unknown Locale', function() {
+        var tests = [
+                [1234.5, '0,0.00', '1,234.50'],
+                [1234.5, '$0,0.00', '$1,234.50'],
+                [1, '0o', '1st'],
+                [1230000, '0.0a', '1.2m']
+            ],
+            unformatTests = [
+                ['1,234.50', 1234.5],
+                ['$1,234.50', 1234.5],
+                ['1.2m', 1200000]
+            ];
+
+        it('should keep the current locale when setting an unknown locale', function() {
+            var i;
+
+            expect(numeral.locale('xx')).to.equal('en');
+            expect(numeral.locale('XX-unknown')).to.equal('en');
+
+            for (i = 0; i < tests.length; i++) {
+                expect(numeral(tests[i][0]).format(tests[i][1])).to.equal(tests[i][2]);
+            }
+
+            for (i = 0; i < unformatTests.length; i++) {
+                expect(numeral(unformatTests[i][0]).value()).to.equal(unformatTests[i][1]);
+            }
+        });
+
+        it('should fall back to en when the current locale is not registered', function() {
+            var i;
+
+            numeral.options.currentLocale = 'xx';
+
+            expect(numeral.localeData()).to.equal(numeral.locales.en);
+
+            for (i = 0; i < tests.length; i++) {
+                expect(numeral(tests[i][0]).format(tests[i][1])).to.equal(tests[i][2]);
+            }
+
+            for (i = 0; i < unformatTests.length; i++) {
+                expect(numeral(unformatTests[i][0]).value()).to.equal(unformatTests[i][1]);
+            }
+        });
+
+        it('should still throw when asking for unknown locale data', function() {
+            expect(function() {
+                numeral.localeData('xx');
+            }).to.throw('Unknown locale : xx');
+        });
+    });
+
     describe('Clone', function() {
         it('should clone', function() {
             var a = numeral(1000),
