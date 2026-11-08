@@ -921,7 +921,7 @@
         numeral.register('format', 'exponential', {
         regexps: {
             format: /(e\+|e-)/,
-            unformat: /(e\+|e-)/
+            unformat: /(e\+|e-)/i
         },
         format: function(value, format, roundingFunction) {
             var output,
@@ -935,11 +935,12 @@
             return output + 'e' + parts[1];
         },
         unformat: function(string) {
-            var parts = numeral._.includes(string, 'e+') ? string.split('e+') : string.split('e-'),
+            var input = string.toLowerCase(),
+                parts = numeral._.includes(input, 'e+') ? input.split('e+') : input.split('e-'),
                 value = Number(parts[0]),
                 power = Number(parts[1]);
 
-            power = numeral._.includes(string, 'e-') ? power *= -1 : power;
+            power = numeral._.includes(input, 'e-') ? power *= -1 : power;
 
             function cback(accum, curr, currI, O) {
                 var corrFactor = numeral._.correctionFactor(accum, curr),
