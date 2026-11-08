@@ -566,4 +566,38 @@ describe('Numeral', function() {
             });
         });
     });
+
+    describe('Type declarations', function() {
+        // numeral.d.ts is hand-written, so check it still declares everything the runtime exposes
+        if (typeof module === 'undefined' || !module.exports) {
+            return;
+        }
+
+        var declarations = require('fs').readFileSync(require('path').join(__dirname, '../numeral.d.ts'), 'utf8');
+
+        it('should declare every static, prototype, helper and option', function() {
+            var tests = [
+                    [numeral, declarations, /^\s*(?:const|function) (\w+)\b/gm],
+                    [numeral.fn, declarations.split('interface Numeral {')[1].split('}')[0], /^\s*(\w+)\(/gm],
+                    [numeral._, declarations.split('interface NumeralJSUtils {')[1].split('\n    }')[0], /^\s*(\w+)(?:<[^>]*>)?\(/gm],
+                    [numeral.options, declarations.split('interface NumeralJSOptions {')[1].split('}')[0], /^\s*(\w+): /gm]
+                ],
+                declared,
+                match,
+                key,
+                i;
+
+            for (i = 0; i < tests.length; i++) {
+                declared = {};
+
+                while ((match = tests[i][2].exec(tests[i][1])) !== null) {
+                    declared[match[1]] = true;
+                }
+
+                for (key in tests[i][0]) {
+                    expect(declared[key], key).to.equal(true);
+                }
+            }
+        });
+    });
 });
