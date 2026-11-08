@@ -314,6 +314,9 @@
         insert: function(string, subString, start) {
             return string.slice(0, start) + subString + string.slice(start);
         },
+        repeat: function(string, count) {
+            return new Array(count + 1).join(string);
+        },
         reduce: function(array, callback /*, initialValue*/) {
             if (this === null) {
                 throw new TypeError('Array.prototype.reduce called on null or undefined');
@@ -354,7 +357,7 @@
          * finite precision.
          */
         multiplier: function (x) {
-            var parts = x.toString().split('.');
+            var parts = _.toNonExponentialString(x).split('.');
 
             return parts.length < 2 ? 1 : Math.pow(10, parts[1].length);
         },
@@ -378,7 +381,8 @@
          * problems for accounting- and finance-related software.
          */
         toFixed: function(value, maxDecimals, roundingFunction, optionals) {
-            var splitValue = value.toString().split('.'),
+            var splitValue = _.toNonExponentialString(value).split('.'),
+                exponential = value.toString().split('e'),
                 minDecimals = maxDecimals - (optionals || 0),
                 boundedPrecision,
                 optionalsRegExp,
@@ -394,8 +398,16 @@
 
             power = Math.pow(10, boundedPrecision);
 
-            // Multiply up by precision, round accurately, then divide and use native toFixed():
-            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
+            if (exponential.length === 2 && exponential[1].charAt(0) !== '-') {
+                // Very large numbers (toString() gives e.g. 1e+21) are integers, native toFixed() would return exponential form
+                output = splitValue[0] + (boundedPrecision > 0 ? '.' + _.repeat('0', boundedPrecision) : '');
+            } else if (exponential.length === 2) {
+                // Very small numbers (toString() gives e.g. 1e-7), shift the exponent instead of appending a second one
+                output = (roundingFunction(exponential[0] + 'e' + (Number(exponential[1]) + boundedPrecision)) / power).toFixed(boundedPrecision);
+            } else {
+                // Multiply up by precision, round accurately, then divide and use native toFixed():
+                output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
+            }
 
             if (optionals > maxDecimals - boundedPrecision) {
                 optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
@@ -403,6 +415,31 @@
             }
 
             return output;
+        },
+        /**
+         * Like toString(), but writes out numbers that toString() gives in
+         * exponential form (e.g. 1e-7 or 1.5e+21) in full.
+         */
+        toNonExponentialString: function(value) {
+            var valueString = value.toString(),
+                parts = /^(-)?([0-9]+)\.?([0-9]+)?e([-+])?([0-9]+)$/.exec(valueString),
+                sign,
+                iPart,
+                fPart,
+                eSign,
+                zeros;
+
+            if (!parts) {
+                return valueString;
+            }
+
+            sign = parts[1] || '';
+            iPart = parts[2];
+            fPart = parts[3] || '';
+            eSign = parts[4];
+            zeros = _.repeat('0', parseInt(parts[5], 10) - (eSign === '-' ? iPart : fPart).length);
+
+            return sign + (eSign === '-' ? '0.' + zeros : '') + iPart + fPart + (eSign !== '-' ? zeros : '');
         }
     };
 
