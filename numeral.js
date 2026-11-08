@@ -378,16 +378,23 @@
          * problems for accounting- and finance-related software.
          */
         toFixed: function(value, maxDecimals, roundingFunction, optionals) {
-            var splitValue = value.toString().split('.'),
+            var splitExponent = value.toString().split('e'),
+                splitValue = splitExponent[0].split('.'),
+                exponent = splitExponent.length === 2 ? Number(splitExponent[1]) : 0,
                 minDecimals = maxDecimals - (optionals || 0),
+                decimals,
+                expanded,
                 boundedPrecision,
                 optionalsRegExp,
                 power,
                 output;
 
+            // count decimals of the mantissa, shifted by any exponent (1e-7 has 7 decimals)
+            decimals = Math.max((splitValue.length === 2 ? splitValue[1].length : 0) - exponent, 0);
+
             // Use the smallest precision value possible to avoid errors from floating point representation
-            if (splitValue.length === 2) {
-              boundedPrecision = Math.min(Math.max(splitValue[1].length, minDecimals), maxDecimals);
+            if (decimals > 0) {
+              boundedPrecision = Math.min(Math.max(decimals, minDecimals), maxDecimals);
             } else {
               boundedPrecision = minDecimals;
             }
@@ -395,7 +402,14 @@
             power = Math.pow(10, boundedPrecision);
 
             // Multiply up by precision, round accurately, then divide and use native toFixed():
-            output = (roundingFunction(value + 'e+' + boundedPrecision) / power).toFixed(boundedPrecision);
+            output = (roundingFunction(splitExponent[0] + 'e' + (exponent + boundedPrecision)) / power).toFixed(boundedPrecision);
+
+            // native toFixed() returns exponential notation for values >= 1e21, so expand it to plain digits
+            if (output.indexOf('e+') > -1) {
+                expanded = output.split('e+');
+                splitValue = expanded[0].split('.');
+                output = splitValue[0] + (splitValue[1] || '') + new Array(Number(expanded[1]) - (splitValue[1] || '').length + 1).join('0') + (boundedPrecision ? '.' + new Array(boundedPrecision + 1).join('0') : '');
+            }
 
             if (optionals > maxDecimals - boundedPrecision) {
                 optionalsRegExp = new RegExp('\\.?0{1,' + (optionals - (maxDecimals - boundedPrecision)) + '}$');
