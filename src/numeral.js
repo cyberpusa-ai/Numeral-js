@@ -121,6 +121,7 @@
                 int,
                 precision,
                 signed,
+                plus = false,
                 thousands,
                 output;
 
@@ -135,7 +136,8 @@
                 negP = true;
                 format = format.replace(/[\(|\)]/g, '');
             } else if (numeral._.includes(format, '+') || numeral._.includes(format, '-')) {
-                signed = numeral._.includes(format, '+') ? format.indexOf('+') : value < 0 ? format.indexOf('-') : -1;
+                plus = numeral._.includes(format, '+');
+                signed = plus ? format.indexOf('+') : value < 0 ? format.indexOf('-') : -1;
                 format = format.replace(/[\+|\-]/g, '');
             }
 
@@ -250,7 +252,8 @@
             if (negP) {
                 output = (negP && neg ? '(' : '') + output + (negP && neg ? ')' : '');
             } else {
-                if (signed >= 0) {
+                // only add a sign if the rounded value is negative or a + was requested
+                if (signed >= 0 && (neg || plus)) {
                     output = signed === 0 ? (neg ? '-' : '+') + output : output + (neg ? '-' : '+');
                 } else if (neg) {
                     output = '-' + output;

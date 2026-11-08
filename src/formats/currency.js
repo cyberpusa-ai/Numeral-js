@@ -22,6 +22,7 @@
                     after: format.match(/([\+|\-|\)|\s|\$]*)$/)[0]
                 },
                 output,
+                negative,
                 symbol,
                 i;
 
@@ -31,11 +32,13 @@
             // format the number
             output = numeral._.numberToFormat(value, format, roundingFunction);
 
-            // update the before and after based on value
-            if (value >= 0) {
+            // update the before and after based on the formatted output, since a small negative value can round to zero
+            negative = numeral._.includes(output, '-') || numeral._.includes(output, '(');
+
+            if (!negative) {
                 symbols.before = symbols.before.replace(/[\-\(]/, '');
                 symbols.after = symbols.after.replace(/[\-\)]/, '');
-            } else if (value < 0 && (!numeral._.includes(symbols.before, '-') && !numeral._.includes(symbols.before, '('))) {
+            } else if (!numeral._.includes(symbols.before, '-') && !numeral._.includes(symbols.before, '(')) {
                 symbols.before = '-' + symbols.before;
             }
 
