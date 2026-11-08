@@ -56,6 +56,10 @@ See [the english unit tests](https://github.com/adamwdraper/Numeral-js/blob/mast
 
 # Changelog
 
+### Unreleased
+
+Added: `numeral.scalePercentBy100(bool)` setter for the `scalePercentBy100` option. Non-boolean values restore the default (`true`)
+
 ### 2.0.6
 
 Bug fix: Multi letter currency symbols and spacing
