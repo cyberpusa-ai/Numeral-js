@@ -292,7 +292,8 @@
                 }
 
                 for (abbreviation in abbreviations) {
-                    regexp = new RegExp('[^a-zA-Z]' + locale.abbreviations[abbreviation] + '(?:\\)|(\\' + locale.currency.symbol + ')?(?:\\))?)?$');
+                    // whitespace before the abbreviation and before the currency symbol is optional, so '1,2mil.' and '1,2 mil. Kč' both parse
+                    regexp = new RegExp('[^a-zA-Z\\s]\\s*' + locale.abbreviations[abbreviation].replace(/^\s+/, '') + '(?:\\)|\\s*(\\' + locale.currency.symbol + ')?(?:\\))?)?$');
 
                     if (stringOriginal.match(regexp)) {
                         value *= Math.pow(10, abbreviations[abbreviation]);

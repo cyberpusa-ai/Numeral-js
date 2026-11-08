@@ -62,6 +62,10 @@ Added: `numeral.scalePercentBy100(bool)` setter for the `scalePercentBy100` opti
 
 Locale fix: `de-ch` now uses `'` as the thousands delimiter and `.` as the decimal delimiter (same as `fr-ch`). **This changes output and parsing**: `numeral(10000).format('0,0.00')` was `10 000,00` and is now `10'000.00`, and `1,23` is no longer parsed as `1.23` (the comma is now read as a thousands delimiter, giving `123`)
 
+Locale fix: `cs` abbreviations follow CLDR (long scale, with a space): `tis.`, `mil.`, `mld.`, `bil.`. **This changes output**: `numeral(1234567).format('0a')` was `1mil.` and is now `1 mil.`, `numeral(1230974).format('0.0a$')` was `1,2mil.Kč` and is now `1,2 mil.Kč`, and 10^9 / 10^12 are now `mld.` / `bil.` instead of `b` / `t`. Old strings like `1,2mil.` still parse
+
+Bug fix: unformatting allows whitespace before the abbreviation and before a trailing currency symbol in every locale, so `1.2b $` gives `1200000000` (was `1.2`)
+
 ### 2.0.6
 
 Bug fix: Multi letter currency symbols and spacing
