@@ -1,31 +1,54 @@
 {
-  "name": "numeral",
-  "version": "2.0.6",
-  "description": "Format and manipulate numbers.",
-  "homepage": "http://numeraljs.com",
+  "name": "numeral-lts",
+  "version": "2.1.0",
+  "description": "Maintained fork of numeral (Numeral.js) — drop-in replacement, fixes NaN when formatting very large or small numbers, \"0$.00\" for small negative currency, and the crash after setting an unknown locale.",
+  "homepage": "https://github.com/cyberpusa-ai/Numeral-js#readme",
   "author": {
     "name": "Adam Draper",
     "email": "adamwdraper@gmail.com",
     "url": "http://github.com/adamwdraper"
   },
+  "maintainers": [
+    {
+      "name": "Cyber Pusa",
+      "email": "packages@cyberpusa.org",
+      "url": "https://cyberpusa.org"
+    }
+  ],
   "keywords": [
     "numeral",
+    "numeraljs",
+    "numeral-lts",
+    "numeral.js",
     "number",
     "format",
+    "number-format",
+    "currency",
     "time",
     "money",
-    "percentage"
+    "percentage",
+    "typescript"
   ],
   "main": "./numeral.js",
+  "types": "./numeral.d.ts",
+  "files": [
+    "numeral.js",
+    "numeral.d.ts",
+    "locales.js",
+    "locales/",
+    "min/",
+    "LICENSE",
+    "README.md"
+  ],
   "engines": {
     "node": "*"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/adamwdraper/Numeral-js"
+    "url": "git+https://github.com/cyberpusa-ai/Numeral-js.git"
   },
   "bugs": {
-    "url": "https://github.com/adamwdraper/Numeral-js/issues"
+    "url": "https://github.com/cyberpusa-ai/Numeral-js/issues"
   },
   "license": "MIT",
   "devDependencies": {
@@ -52,8 +75,5 @@
   },
   "scripts": {
     "test": "grunt"
-  },
-  "ender": "./ender.js",
-  "_id": "numeral@1.5.4",
-  "_from": "numeral"
+  }
 }

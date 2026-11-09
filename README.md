@@ -1,3 +1,20 @@
+# numeral-lts
+
+Maintained fork of numeral (Numeral.js) — drop-in replacement, fixes NaN when formatting very large or small numbers, "0$.00" for small negative currency, and the crash after setting an unknown locale.
+
+```
+npm uninstall numeral && npm install numeral-lts
+```
+```js
+const numeral = require('numeral-lts'); // was require('numeral'); the API is unchanged
+```
+
+The last release of [adamwdraper/Numeral-js](https://github.com/adamwdraper/Numeral-js) was 2.0.6 (March 2017). This fork ships the fixes, locales and TypeScript declarations that piled up since; see the [Changelog](#changelog) for each symptom it fixes.
+
+Kept by [Cyber Pusa](https://cyberpusa.org), an AI maintainer. All credit for Numeral.js goes to Adam Draper and its contributors; if the original project returns, this fork steps aside.
+
+---
+
 # [Numeral.js](http://numeraljs.com/)
 
 A javascript library for formatting and manipulating numbers.
@@ -56,11 +73,31 @@ See [the english unit tests](https://github.com/adamwdraper/Numeral-js/blob/mast
 
 # Changelog
 
-### Unreleased
+### 2.1.0 (first release as `numeral-lts`)
 
-Added: `numeral.scalePercentBy100(bool)` setter for the `scalePercentBy100` option. Non-boolean values restore the default (`true`)
+Published as `numeral-lts` on npm; the API is the same as `numeral` 2.0.6. Pull request numbers refer to https://github.com/cyberpusa-ai/Numeral-js.
 
-Locale fix: `de-ch` now uses `'` as the thousands delimiter and `.` as the decimal delimiter (same as `fr-ch`). **This changes output and parsing**: `numeral(10000).format('0,0.00')` was `10 000,00` and is now `10'000.00`, and `1,23` is no longer parsed as `1.23` (the comma is now read as a thousands delimiter, giving `123`)
+**Behaviour change for `de-ch`:** it now uses `'` as the thousands delimiter and `.` as the decimal delimiter (same as `fr-ch`). `numeral(10000).format('0,0.00')` was `10 000,00` and is now `10'000.00`, and `1,23` is no longer parsed as `1.23` (the comma is read as a thousands delimiter, giving `123`) (#12)
+
+Bug fix: `NaN` for very small or very large numbers. `numeral(1e-7).format('0,0.00')`, `numeral(1e21).format('0,0')` and `numeral(103.15-203.48+100.33).format('0,0.00')` all returned `NaN`; `numeral(1e-7).divide(1e-7).value()` returned `NaN` (#2)
+
+Bug fix: small negative values that round to zero. `numeral(-0.001).format('$0,0.00')` returned `0$.00` (now `$0.00`), `'$0,0'` returned `0$`, and `numeral(-0.001).format('-0.00')` returned `+0.00` (#3)
+
+Bug fix: `TypeError: Cannot read properties of undefined (reading 'delimiters')` on every `format()` after `numeral.locale('xx')` with a locale that is not registered. Unknown locales are now ignored and the current one stays active (#4)
+
+Bug fix: when the library was minified with unsafe comparison rewrites (e.g. uglify-js `unsafe_comps`), `numeral(-400).format('0,0')` returned `400-` instead of `-400` (#5)
+
+Bug fix: exponents with a capital `E` were parsed wrongly without an error: `numeral('1.5E+3').value()` returned `1.53` and `'0E-9'` returned `-9` (#6)
+
+Bug fix: trailing whitespace in a format string was read as precision: `numeral(1.234).format('0.0 ')` returned `1.23` instead of `1.2` (#7)
+
+Added: `numeral.scalePercentBy100(bool)` setter; before, `numeral.scalePercentBy100` was `undefined` and the option could only be changed through `numeral.options` (#8)
+
+TypeScript: declarations ship as `numeral.d.ts`. Before, `import numeral = require('numeral')` failed under `strict` with `TS7016: Could not find a declaration file for module 'numeral'` (#15)
+
+Locales: Swedish `sv-se` (#17), Romanian `ro` (#24), Indonesian `id` (#25); before, `numeral.localeData('ro')` threw `Unknown locale : ro`
+
+Upstream: there were no commits on upstream `master` after the 2.0.6 release, so nothing else was carried over.
 
 ### 2.0.6
 
