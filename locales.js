@@ -716,6 +716,30 @@
 
 
 (function() {
+        numeral.register('locale', 'sv-se', {
+        delimiters: {
+            thousands: ' ',
+            decimal: ','
+        },
+        abbreviations: {
+            thousand: 't',
+            million: 'mn',
+            billion: 'md',
+            trillion: 'bn'
+        },
+        ordinal: function (number) {
+            var b = number % 10;
+            return (~~ (number % 100 / 10) === 1) ? ':e' :
+                (b === 1 || b === 2) ? ':a' : ':e';
+        },
+        currency: {
+            symbol: 'kr'
+        }
+    });
+})();
+
+
+(function() {
     
 
     numeral.register('locale', 'th', {
