@@ -622,6 +622,28 @@
 
 
 (function() {
+        numeral.register('locale', 'ro', {
+        delimiters: {
+            thousands: '.',
+            decimal: ','
+        },
+        abbreviations: {
+            thousand: 'K',
+            million: 'mil.',
+            billion: 'mld.',
+            trillion: 'tril.'
+        },
+        ordinal: function (number) {
+            return number === 1 ? '' : '-lea';
+        },
+        currency: {
+            symbol: 'lei'
+        }
+    });
+})();
+
+
+(function() {
         numeral.register('locale', 'ru-ua', {
         delimiters: {
             thousands: ' ',
