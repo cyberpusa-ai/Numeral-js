@@ -38,6 +38,9 @@
             if (!negative) {
                 symbols.before = symbols.before.replace(/[\-\(]/, '');
                 symbols.after = symbols.after.replace(/[\-\)]/, '');
+            } else if (numeral._.includes(symbols.before, '+') && symbols.before.indexOf('+') < symbols.before.indexOf('$')) {
+                // the sign goes where the + was, so the symbol still lands after it
+                symbols.before = symbols.before.replace('+', '-');
             } else if (!numeral._.includes(symbols.before, '-') && !numeral._.includes(symbols.before, '(')) {
                 symbols.before = '-' + symbols.before;
             }
