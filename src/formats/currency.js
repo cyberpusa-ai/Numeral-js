@@ -39,7 +39,12 @@
                 symbols.before = symbols.before.replace(/[\-\(]/, '');
                 symbols.after = symbols.after.replace(/[\-\)]/, '');
             } else if (!numeral._.includes(symbols.before, '-') && !numeral._.includes(symbols.before, '(')) {
-                symbols.before = '-' + symbols.before;
+                // a '+' ahead of the symbol becomes the '-' so the symbol keeps its place after the sign
+                if (numeral._.includes(symbols.before, '+') && symbols.before.indexOf('+') < symbols.before.indexOf('$')) {
+                    symbols.before = symbols.before.replace('+', '-');
+                } else {
+                    symbols.before = '-' + symbols.before;
+                }
             }
 
             // loop through each before symbol
