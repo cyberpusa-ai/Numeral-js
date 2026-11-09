@@ -73,6 +73,10 @@ See [the english unit tests](https://github.com/adamwdraper/Numeral-js/blob/mast
 
 # Changelog
 
+### Unreleased
+
+Added: Traditional Chinese locale `zh-tw` (currency `NT$`, abbreviations 千/百萬/十億/兆); before, `numeral.localeData('zh-tw')` threw `Unknown locale : zh-tw`
+
 ### 2.1.0 (first release as `numeral-lts`)
 
 Published as `numeral-lts` on npm; the API is the same as `numeral` 2.0.6. Pull request numbers refer to https://github.com/cyberpusa-ai/Numeral-js.
