@@ -58,6 +58,8 @@ See [the english unit tests](https://github.com/adamwdraper/Numeral-js/blob/mast
 
 ### Unreleased
 
+Bug fix: Formatting `Infinity` and `-Infinity` no longer produces `NaN` output. **This changes output**: `numeral(Infinity).format('0,0')` was `NaN` (`'0a'` gave `NaNt`, `'0o'` gave `NaNth`, `'$0,0'` gave `$NaN`) and is now `Infinity` (`-Infinity` for negative infinity) for every format
+
 Added: `numeral.scalePercentBy100(bool)` setter for the `scalePercentBy100` option. Non-boolean values restore the default (`true`)
 
 Locale fix: `de-ch` now uses `'` as the thousands delimiter and `.` as the decimal delimiter (same as `fr-ch`). **This changes output and parsing**: `numeral(10000).format('0,0.00')` was `10 000,00` and is now `10'000.00`, and `1,23` is no longer parsed as `1.23` (the comma is now read as a thousands delimiter, giving `123`)
