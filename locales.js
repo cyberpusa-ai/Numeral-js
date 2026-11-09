@@ -421,6 +421,29 @@
 
 
 (function() {
+        numeral.register('locale', 'id', {
+        delimiters: {
+            thousands: '.',
+            decimal: ','
+        },
+        abbreviations: {
+            thousand: 'rb',
+            million: 'jt',
+            billion: 'M',
+            trillion: 'T'
+        },
+        ordinal: function (number) {
+            // Indonesian ordinals are a prefix ("ke-2", "pertama"), which a suffix cannot express
+            return '';
+        },
+        currency: {
+            symbol: 'Rp'
+        }
+    });
+})();
+
+
+(function() {
         numeral.register('locale', 'it', {
         delimiters: {
             thousands: '.',
