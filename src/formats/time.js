@@ -17,11 +17,14 @@
             unformat: /(:)/
         },
         format: function(value, format, roundingFunction) {
-            var hours = Math.floor(value / 60 / 60),
-                minutes = Math.floor((value - (hours * 60 * 60)) / 60),
-                seconds = Math.round(value - (hours * 60 * 60) - (minutes * 60));
+            // round the total first so seconds never carry over to 60
+            var total = Math.round(Math.abs(value)),
+                sign = value < 0 && total > 0 ? '-' : '',
+                hours = Math.floor(total / 60 / 60),
+                minutes = Math.floor((total - (hours * 60 * 60)) / 60),
+                seconds = total - (hours * 60 * 60) - (minutes * 60);
 
-            return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+            return sign + hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
         },
         unformat: function(string) {
             var timeArray = string.split(':'),
