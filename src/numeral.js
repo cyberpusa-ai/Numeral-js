@@ -637,6 +637,9 @@
                 output = options.zeroFormat;
             } else if (value === null && options.nullFormat !== null) {
                 output = options.nullFormat;
+            } else if (typeof value === 'number' && !isFinite(value) && !numeral._.isNaN(value)) {
+                // Infinity and -Infinity can't be formatted, so output them as is
+                output = String(value);
             } else {
                 for (kind in formats) {
                     if (format.match(formats[kind].regexps.format)) {

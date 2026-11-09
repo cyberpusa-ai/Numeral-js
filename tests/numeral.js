@@ -300,6 +300,37 @@ describe('Numeral', function() {
                 expect(typeof output).to.equal('string');
             }
         });
+
+        it('should format non-finite numbers', function() {
+            var tests = [
+                    [Infinity, '0,0', 'Infinity'],
+                    [-Infinity, '0,0', '-Infinity'],
+                    [Infinity, '0,0.00', 'Infinity'],
+                    [-Infinity, '(0,0)', '-Infinity'],
+                    [Infinity, '+0', 'Infinity'],
+                    [Infinity, '$0,0.00', 'Infinity'],
+                    [-Infinity, '$0,0', '-Infinity'],
+                    [Infinity, '0a', 'Infinity'],
+                    [-Infinity, '0.0a', '-Infinity'],
+                    [Infinity, '0o', 'Infinity'],
+                    [-Infinity, '0o', '-Infinity'],
+                    [Infinity, '0b', 'Infinity'],
+                    [-Infinity, '0.0 ib', '-Infinity'],
+                    [Infinity, '0%', 'Infinity'],
+                    [Infinity, '00:00:00', 'Infinity'],
+                    [-Infinity, '0e+0', '-Infinity'],
+                    [Infinity, '0 BPS', 'Infinity']
+                ],
+                i,
+                n;
+
+            for (i = 0; i < tests.length; i++) {
+                n = numeral(tests[i][0]);
+
+                expect(n.format(tests[i][1])).to.equal(tests[i][2]);
+                expect(n.value()).to.equal(tests[i][0]);
+            }
+        });
     });
 
     describe('Unformat', function() {
