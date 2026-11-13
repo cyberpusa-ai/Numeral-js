@@ -1,6 +1,6 @@
 /*! @preserve
  * numeral.js
- * <%= type %> : 2.1.0
+ * <%= type %> : 2.1.1
  * license : MIT
  * http://adamwdraper.github.com/Numeral-js/
  */

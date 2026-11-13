@@ -1,6 +1,6 @@
 {
   "name": "numeral-lts",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "Maintained fork of numeral (Numeral.js) — drop-in replacement, fixes NaN when formatting very large or small numbers, \"0$.00\" for small negative currency, and the crash after setting an unknown locale.",
   "homepage": "https://github.com/cyberpusa-ai/Numeral-js#readme",
   "author": {

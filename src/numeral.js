@@ -1,6 +1,6 @@
 /*! @preserve
  * numeral.js
- * version : 2.1.0
+ * version : 2.1.1
  * author : Adam Draper
  * license : MIT
  * http://adamwdraper.github.com/Numeral-js/
@@ -21,7 +21,7 @@
 
     var numeral,
         _,
-        VERSION = '2.1.0',
+        VERSION = '2.1.1',
         formats = {},
         locales = {},
         defaults = {
