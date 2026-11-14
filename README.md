@@ -75,6 +75,8 @@ See [the english unit tests](https://github.com/adamwdraper/Numeral-js/blob/mast
 
 ### Unreleased
 
+Added: Persian locale `fa-ir` (currency `﷼`, abbreviations هزار/میلیون/میلیارد/تریلیون, ordinal suffix `ام`). It uses Latin `,` and `.` as delimiters instead of the CLDR Persian `٬` and `٫`, because numeral can only output Latin digits and these are the separators used with Latin digits in Iran (CLDR `fa` latn). Before, `numeral.localeData('fa-ir')` threw `Unknown locale : fa-ir`
+
 Added: Irish English locale `en-ie` (en-gb delimiters, abbreviations and ordinals with currency `€`); before, `numeral.localeData('en-ie')` threw `Unknown locale : en-ie`
 
 Added: Traditional Chinese locale `zh-tw` (currency `NT$`, abbreviations 千/百萬/十億/兆); before, `numeral.localeData('zh-tw')` threw `Unknown locale : zh-tw`

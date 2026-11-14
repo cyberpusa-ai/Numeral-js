@@ -337,6 +337,28 @@
 
 
 (function() {
+        numeral.register('locale', 'fa-ir', {
+        delimiters: {
+            thousands: ',',
+            decimal: '.'
+        },
+        abbreviations: {
+            thousand: 'هزار',
+            million: 'میلیون',
+            billion: 'میلیارد',
+            trillion: 'تریلیون'
+        },
+        ordinal: function (number) {
+            return 'ام';
+        },
+        currency: {
+            symbol: '﷼'
+        }
+    });
+})();
+
+
+(function() {
         numeral.register('locale', 'fi', {
         delimiters: {
             thousands: ' ',
