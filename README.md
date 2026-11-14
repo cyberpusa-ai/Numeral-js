@@ -75,6 +75,8 @@ See [the english unit tests](https://github.com/adamwdraper/Numeral-js/blob/mast
 
 ### Unreleased
 
+**Bug fix (changes output):** strings with letters between digits are no longer read as numbers. `numeral('123what456').value()` and `numeral('78o0').value()` were `123456` and `780` and are now `null`, the same as other unparseable input. The locale's currency symbol and abbreviations are still allowed, as are leading or trailing text like `$`, `k`, `th`, `KB` or `BPS` (adamwdraper/Numeral-js#449)
+
 Added: Persian locale `fa-ir` (currency `﷼`, abbreviations هزار/میلیون/میلیارد/تریلیون, ordinal suffix `ام`). It uses Latin `,` and `.` as delimiters instead of the CLDR Persian `٬` and `٫`, because numeral can only output Latin digits and these are the separators used with Latin digits in Iran (CLDR `fa` latn). Before, `numeral.localeData('fa-ir')` threw `Unknown locale : fa-ir`
 
 Added: Irish English locale `en-ie` (en-gb delimiters, abbreviations and ordinals with currency `€`); before, `numeral.localeData('en-ie')` threw `Unknown locale : en-ie`

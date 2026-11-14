@@ -320,6 +320,15 @@ describe('Numeral', function() {
                 ['1.23t', 1230000000000],
                 ['N/A', 0],
                 ['', null],
+                // letters between digits are not a number (adamwdraper/Numeral-js#449)
+                ['123what456', null],
+                ['78o0', null],
+                ['1,2a34.5', null],
+                ['$1,234.56', 1234.56],
+                ['(1.5k)', -1500],
+                ['12th', 12],
+                ['abc123', 123],
+                ['123abc', 123],
                 // Pass Through for Numbers
                 [0, 0],
                 [1, 1],
