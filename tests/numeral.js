@@ -320,6 +320,17 @@ describe('Numeral', function() {
                 ['1.23t', 1230000000000],
                 ['N/A', 0],
                 ['', null],
+                // letters between digits are not a number
+                ['123what456', null],
+                ['78o0', null],
+                ['1,2x3.45', null],
+                // letters outside the digits are still accepted
+                ['$1,234.56', 1234.56],
+                ['-$1,234.56k', -1234560],
+                ['($1.2m)', -1200000],
+                ['22nd', 22],
+                ['1.5 KB', 1500],
+                ['abc 1,000 xyz', 1000],
                 // Pass Through for Numbers
                 [0, 0],
                 [1, 1],

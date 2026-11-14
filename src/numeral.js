@@ -284,6 +284,9 @@
                 value = 0;
             } else if (options.nullFormat && string === options.nullFormat || !string.replace(/[^0-9]+/g, '').length) {
                 value = null;
+            } else if (/[0-9][^0-9]*[a-zA-Z][^0-9]*[0-9]/.test(string.split(locale.currency.symbol).join(''))) {
+                // letters between digits (e.g. '123what456' or '78o0') are not a number
+                value = null;
             } else {
                 value = 1;
 
