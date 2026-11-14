@@ -556,6 +556,9 @@
         //trim whitespaces from either sides
         val = val.trim();
 
+        //strip one leading sign, numeral() accepts negative and explicitly positive values
+        val = val.replace(/^[+-]/, '');
+
         //if val is just digits return true
         if (!!val.match(/^\d+$/)) {
             return true;

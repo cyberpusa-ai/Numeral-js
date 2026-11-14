@@ -368,7 +368,16 @@ describe('Numeral', function() {
                     ['1000,', false],
                     ['10..00', false],
                     ['10,,00', false],
-                    ['10, 00', false]
+                    ['10, 00', false],
+                    ['-1000', true],
+                    ['-1,000.5', true],
+                    [' -1000 ', true],
+                    ['+1000', true],
+                    ['--1', false],
+                    ['+-1000', false],
+                    ['-', false],
+                    ['- 1000', false],
+                    ['-asad123123', false]
                 ];
 
                 for (var i = 0; i < tests.length; i++) {
@@ -406,7 +415,14 @@ describe('Numeral', function() {
                     ['$100$', false],
                     ['$100,213.456l', false],
                     ['aa100,213.456l', false],
-                    ['$100,213.456kk', false]
+                    ['$100,213.456kk', false],
+                    ['-$100m', true],
+                    ['-$1000', true],
+                    ['-$100,200,012.123', true],
+                    ['-100,456.123k', true],
+                    ['$-1000', false],
+                    ['$-as123', false],
+                    ['-$', false]
                 ];
 
                 for (var i = 0; i < tests.length; i++) {
