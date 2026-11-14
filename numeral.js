@@ -1033,11 +1033,25 @@
             unformat: /(:)/
         },
         format: function(value, format, roundingFunction) {
-            var hours = Math.floor(value / 60 / 60),
-                minutes = Math.floor((value - (hours * 60 * 60)) / 60),
-                seconds = Math.round(value - (hours * 60 * 60) - (minutes * 60));
+            var precision = format.match(/:0*\.(0+)/),
+                fraction = '',
+                rounded,
+                hours,
+                minutes,
+                seconds;
 
-            return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds);
+            // fractional seconds (e.g. '00:00:00.000'): round the total once, then split it
+            if (precision) {
+                rounded = numeral._.toFixed(value || 0, precision[1].length, roundingFunction).split('.');
+                value = Number(rounded[0]);
+                fraction = '.' + rounded[1];
+            }
+
+            hours = Math.floor(value / 60 / 60);
+            minutes = Math.floor((value - (hours * 60 * 60)) / 60);
+            seconds = Math.round(value - (hours * 60 * 60) - (minutes * 60));
+
+            return hours + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds < 10 ? '0' + seconds : seconds) + fraction;
         },
         unformat: function(string) {
             var timeArray = string.split(':'),
