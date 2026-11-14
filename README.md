@@ -75,6 +75,8 @@ See [the english unit tests](https://github.com/adamwdraper/Numeral-js/blob/mast
 
 ### Unreleased
 
+Added: Paraguayan Spanish locale `es-py` (es abbreviations and ordinals with `.` thousands, `,` decimal and currency `₲`); before, `numeral.localeData('es-py')` threw `Unknown locale : es-py`
+
 Added: Irish English locale `en-ie` (en-gb delimiters, abbreviations and ordinals with currency `€`); before, `numeral.localeData('en-ie')` threw `Unknown locale : en-ie`
 
 Added: Traditional Chinese locale `zh-tw` (currency `NT$`, abbreviations 千/百萬/十億/兆); before, `numeral.localeData('zh-tw')` threw `Unknown locale : zh-tw`
